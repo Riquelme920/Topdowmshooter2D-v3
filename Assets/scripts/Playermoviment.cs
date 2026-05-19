@@ -7,11 +7,13 @@ private PlayerControl playerControls;
 private Vector2 moviment;
 private Rigidbody2D rb;
 private Animator myAnimator;
+private SpriteRenderer mySpriteRenderer;
 private void Awake()
 {
     playerControls = new PlayerControl();
     rb = GetComponent<Rigidbody2D>();
     myAnimator = GetComponent<Animator>();
+    mySpriteRenderer = GetComponent<SpriteRenderer>();
 }
 private void OnEnable()
 {
@@ -24,6 +26,7 @@ private void OnEnable()
 
     void Update()
     {
+        AdjustPlayerfacingDirection();
         PlayerImput();
     }
     private void PlayerImput(){
@@ -40,6 +43,20 @@ private void OnEnable()
         private void move()
         {
             rb.MovePosition(rb.position + moviment * (moveSpeed * Time.fixedDeltaTime));
+        }
+
+        private void AdjustPlayerfacingDirection()
+        {
+            Vector3 mousePos = Input.mousePosition;
+            Vector3 playerScreemPoint = Camera.main.WorldToScreenPoint(transform.position);
+            if (mousePos.x < playerScreemPoint.x)
+            {
+                mySpriteRenderer.flipX = true;
+            }
+            else
+            {
+               mySpriteRenderer.flipX = false;
+            }
         }
 
 }
